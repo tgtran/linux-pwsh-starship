@@ -1,0 +1,55 @@
+# ============================================
+# Starship Prompt Configuration
+# ============================================
+
+# Add a blank line between prompts
+add_newline = true
+
+# Show hostname (your request)
+[hostname]
+ssh_only = false
+format = "[$hostname]($style) "
+style = "bold green"
+
+# Directory module
+[directory]
+truncation_length = 3
+truncate_to_repo = false
+style = "bold blue"
+
+# Git branch
+[git_branch]
+symbol = "🌱 "
+style = "bold purple"
+
+# Git status
+[git_status]
+style = "bold red"
+conflicted = "⚔️ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕"
+untracked = "?"
+stashed = "📦"
+modified = "✏️ "
+staged = "+"
+
+# Exit status
+[status]
+style = "bold yellow"
+symbol = "✗ "
+format = "[$symbol$status]($style) "
+disabled = false
+
+# Time
+[time]
+disabled = false
+format = "🕒 [$time]($style) "
+style = "bold cyan"
+
+# Prompt symbol
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold green"
+style_error = "bold red"

@@ -1,0 +1,88 @@
+# ============================================
+# STAR TREK / LCARS THEMED STARSHIP PROMPT
+# ============================================
+
+add_newline = true
+
+# LCARS-style layout
+format = """
+[╭──](bold bright-yellow)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[╰─🖖 ](bold bright-yellow)
+"""
+
+# --------------------------------------------
+# Hostname (Starfleet computer style)
+# --------------------------------------------
+[hostname]
+ssh_only = false
+format = "[USS-$hostname](bold bright-magenta) "
+
+# --------------------------------------------
+# Directory (LCARS blue)
+# --------------------------------------------
+[directory]
+style = "bold bright-blue"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " ⭙"
+read_only_style = "bold bright-red"
+
+# --------------------------------------------
+# Git Branch (Starfleet delta)
+# --------------------------------------------
+[git_branch]
+symbol = "⟡ "
+style = "bold bright-cyan"
+format = "[$symbol$branch]($style) "
+
+# --------------------------------------------
+# Git Status (LCARS orange)
+# --------------------------------------------
+[git_status]
+style = "bold bright-yellow"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "⊘ "
+stashed = "📦 "
+modified = "✎ "
+staged = "+"
+
+# --------------------------------------------
+# Programming Languages (Starfleet icons)
+# --------------------------------------------
+
+[python]
+symbol = "🐍 "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[nodejs]
+symbol = "🖥 "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = "🛠 "
+style = "bright-red"
+format = "[$symbol$version]($style) "
+
+# --------------------------------------------
+# Exit Status (LCARS alert)
+# --------------------------------------------
+[status]
+disabled = false
+symbol = "⚠ "
+style = "bold bright-red"
+format = "[$symbol$status]($style) "
+
+# --------------------------------------------
+# Prompt Character (Starfleet command arrow)
+# --------------------------------------------
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-green"
+style_error = "bold bright-red"

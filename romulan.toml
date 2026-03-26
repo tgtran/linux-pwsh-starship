@@ -1,0 +1,44 @@
+# ============================================
+# ROMULAN WARBIRD — Starship Prompt
+# ============================================
+
+add_newline = true
+
+format = """
+[🜄 ](bold green)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[🜂 ](bold green) ❯
+"""
+
+[hostname]
+ssh_only = false
+format = "[RSE-$hostname](bold bright-green) "
+
+[directory]
+style = "bold green"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " ⛔"
+read_only_style = "bold bright-red"
+
+[git_branch]
+symbol = "⟢ "
+style = "bold bright-green"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold bright-green"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "⊘ "
+stashed = "⧉ "
+modified = "✎ "
+staged = "+"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-green"
+style_error = "bold bright-red"

@@ -1,0 +1,40 @@
+# ============================================
+# GALACTIC EMPIRE — Starship Prompt
+# ============================================
+
+add_newline = true
+
+format = """
+[✠ ](bold bright-red)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[✚ ](bold bright-red) ❯
+"""
+
+[hostname]
+ssh_only = false
+format = "[IMP-$hostname](bold bright-red) "
+
+[directory]
+style = "bold bright-red"
+truncation_length = 3
+read_only = " ⛔"
+read_only_style = "bold bright-yellow"
+
+[git_branch]
+symbol = "✠ "
+style = "bold bright-red"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold bright-red"
+format = "[$all_status$ahead_behind]($style) "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+untracked = "⊘ "
+modified = "✎ "
+staged = "+"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-red"
+style_error = "bold bright-yellow"

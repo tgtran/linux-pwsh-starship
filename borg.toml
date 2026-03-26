@@ -1,0 +1,93 @@
+# ============================================
+# BORG ENGINEERING STARSHIP PROMPT
+# ============================================
+
+add_newline = true
+
+# Collective-style layout
+format = """
+[▌](bold bright-green)$hostname$directory$git_branch$git_status$python$nodejs$rust$golang
+[▐](bold bright-green) [🜁 ](bold bright-green)
+"""
+
+# --------------------------------------------
+# Hostname (Designation)
+# --------------------------------------------
+[hostname]
+ssh_only = false
+format = "[UNIT-$hostname](bold bright-green) "
+
+# --------------------------------------------
+# Directory (Borg green)
+# --------------------------------------------
+[directory]
+style = "bold green"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " ⛔"
+read_only_style = "bold bright-red"
+
+# --------------------------------------------
+# Git Branch (Assimilation node)
+# --------------------------------------------
+[git_branch]
+symbol = "⟨⟨ "
+style = "bold bright-green"
+format = "[$symbol$branch]($style) "
+
+# --------------------------------------------
+# Git Status (Collective diagnostics)
+# --------------------------------------------
+[git_status]
+style = "bold bright-green"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "⊘ "
+stashed = "⧉ "
+modified = "✎ "
+staged = "+"
+
+# --------------------------------------------
+# Programming Languages (Borg subsystem icons)
+# --------------------------------------------
+
+[python]
+symbol = "⟨Py⟩ "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[nodejs]
+symbol = "⟨Js⟩ "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = "⟨Fe⟩ "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[golang]
+symbol = "⟨Go⟩ "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+# --------------------------------------------
+# Exit Status (Borg alert)
+# --------------------------------------------
+[status]
+disabled = false
+symbol = "⚠ "
+style = "bold bright-red"
+format = "[$symbol$status]($style) "
+
+# --------------------------------------------
+# Prompt Character (Assimilation arrow)
+# --------------------------------------------
+[character]
+success_symbol = "▸"
+error_symbol = "▸"
+style_success = "bold bright-green"
+style_error = "bold bright-red"

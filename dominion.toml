@@ -1,0 +1,44 @@
+# ============================================
+# DOMINION FOUNDERS — Starship Prompt
+# ============================================
+
+add_newline = true
+
+format = """
+[✦ ](bold bright-magenta)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[✧ ](bold bright-magenta) ❯
+"""
+
+[hostname]
+ssh_only = false
+format = "[GDS-$hostname](bold bright-magenta) "
+
+[directory]
+style = "bold bright-magenta"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " ⛔"
+read_only_style = "bold bright-yellow"
+
+[git_branch]
+symbol = "✦ "
+style = "bold bright-magenta"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold bright-magenta"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "⊘ "
+stashed = "⧉ "
+modified = "✎ "
+staged = "+"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-magenta"
+style_error = "bold bright-yellow"

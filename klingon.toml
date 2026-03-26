@@ -1,0 +1,44 @@
+# ============================================
+# KLINGON COMMAND — Starship Prompt
+# ============================================
+
+add_newline = true
+
+format = """
+[⚔ ](bold red)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[🟥 ](bold red) ❯
+"""
+
+[hostname]
+ssh_only = false
+format = "[IKS-$hostname](bold bright-red) "
+
+[directory]
+style = "bold red"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " ⛔"
+read_only_style = "bold bright-yellow"
+
+[git_branch]
+symbol = "⚔ "
+style = "bold bright-red"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold bright-yellow"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "❓ "
+stashed = "📦 "
+modified = "✎ "
+staged = "+"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-red"
+style_error = "bold bright-yellow"

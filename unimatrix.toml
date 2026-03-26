@@ -1,0 +1,59 @@
+# ============================================
+# UNIMATRIX ZERO — Starship Prompt
+# ============================================
+
+add_newline = true
+
+format = """
+[▛](bold bright-green)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[▙](bold bright-green) [⟐ ](bold bright-green)
+"""
+
+[hostname]
+ssh_only = false
+format = "[UZ-$hostname](bold bright-green) "
+
+[directory]
+style = "bold green"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " ⛔"
+read_only_style = "bold bright-red"
+
+[git_branch]
+symbol = "⟨⟨ "
+style = "bold bright-green"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold bright-green"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "⊘ "
+stashed = "⧉ "
+modified = "✎ "
+staged = "+"
+
+[python]
+symbol = "⟨Py⟩ "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[nodejs]
+symbol = "⟨Js⟩ "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = "⟨Fe⟩ "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[character]
+success_symbol = "▸"
+error_symbol = "▸"
+style_success = "bold bright-green"
+style_error = "bold bright-red"

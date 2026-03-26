@@ -1,0 +1,93 @@
+# ============================================
+# NERDY STARSHIP PROMPT
+# ============================================
+
+# Add a blank line between prompts
+add_newline = true
+
+# Global format (nerdy layout)
+format = """
+[╭─](bold green)$hostname$directory$git_branch$git_status$python$nodejs$rust$golang
+[╰─❯](bold green) """
+
+# --------------------------------------------
+# Hostname (always show)
+# --------------------------------------------
+[hostname]
+ssh_only = false
+format = "[$hostname](bold purple) "
+
+# --------------------------------------------
+# Directory
+# --------------------------------------------
+[directory]
+style = "bold cyan"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " "
+read_only_style = "bold red"
+
+# --------------------------------------------
+# Git Branch
+# --------------------------------------------
+[git_branch]
+symbol = " "
+style = "bold yellow"
+format = "[$symbol$branch]($style) "
+
+# --------------------------------------------
+# Git Status
+# --------------------------------------------
+[git_status]
+style = "bold red"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚔ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = " "
+stashed = "📦 "
+modified = "✏ "
+staged = "+"
+
+# --------------------------------------------
+# Programming Languages (nerdy icons)
+# --------------------------------------------
+
+[python]
+symbol = "🐍 "
+style = "bold green"
+format = "[$symbol$version]($style) "
+
+[nodejs]
+symbol = " "
+style = "bold green"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = "🦀 "
+style = "bold red"
+format = "[$symbol$version]($style) "
+
+[golang]
+symbol = " "
+style = "bold cyan"
+format = "[$symbol$version]($style) "
+
+# --------------------------------------------
+# Exit Status
+# --------------------------------------------
+[status]
+disabled = false
+symbol = "✗ "
+style = "bold red"
+format = "[$symbol$status]($style) "
+
+# --------------------------------------------
+# Prompt Character
+# --------------------------------------------
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold green"
+style_error = "bold red"

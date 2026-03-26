@@ -1,0 +1,44 @@
+# ============================================
+# CARDASSIAN OPS — Starship Prompt
+# ============================================
+
+add_newline = true
+
+format = """
+[▤ ](bold bright-yellow)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[▥ ](bold bright-yellow) ❯
+"""
+
+[hostname]
+ssh_only = false
+format = "[CDS-$hostname](bold bright-yellow) "
+
+[directory]
+style = "bold bright-yellow"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " ⛔"
+read_only_style = "bold bright-red"
+
+[git_branch]
+symbol = "▤ "
+style = "bold bright-yellow"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold bright-yellow"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "⊘ "
+stashed = "⧉ "
+modified = "✎ "
+staged = "+"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-yellow"
+style_error = "bold bright-red"

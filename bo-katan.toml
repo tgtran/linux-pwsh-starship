@@ -1,0 +1,40 @@
+# ============================================
+# NITE OWLS — Starship Prompt
+# ============================================
+
+add_newline = true
+
+format = """
+[🜂 ](bold bright-blue)$hostname$directory$git_branch$git_status$python$nodejs$rust
+[🜄 ](bold bright-blue) ❯
+"""
+
+[hostname]
+ssh_only = false
+format = "[OWL-$hostname](bold bright-blue) "
+
+[directory]
+style = "bold bright-blue"
+truncation_length = 3
+read_only = " ⛔"
+read_only_style = "bold bright-red"
+
+[git_branch]
+symbol = "🜂 "
+style = "bold bright-blue"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold bright-blue"
+format = "[$all_status$ahead_behind]($style) "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+untracked = "⊘ "
+modified = "✎ "
+staged = "+"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-blue"
+style_error = "bold bright-red"

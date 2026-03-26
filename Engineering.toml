@@ -1,0 +1,93 @@
+# ============================================
+# STARFLEET ENGINEERING STARSHIP PROMPT
+# ============================================
+
+add_newline = true
+
+# Engineering console layout
+format = """
+[╔══](bold bright-yellow)$hostname$directory$git_branch$git_status$python$nodejs$rust$golang
+[╚═⚙️ ](bold bright-yellow)
+"""
+
+# --------------------------------------------
+# Hostname (Engineering prefix)
+# --------------------------------------------
+[hostname]
+ssh_only = false
+format = "[ENG-$hostname](bold bright-yellow) "
+
+# --------------------------------------------
+# Directory (LCARS blue)
+# --------------------------------------------
+[directory]
+style = "bold bright-blue"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " 🔒"
+read_only_style = "bold bright-red"
+
+# --------------------------------------------
+# Git Branch (Engineering delta)
+# --------------------------------------------
+[git_branch]
+symbol = "⟡ "
+style = "bold bright-cyan"
+format = "[$symbol$branch]($style) "
+
+# --------------------------------------------
+# Git Status (Engineering diagnostics)
+# --------------------------------------------
+[git_status]
+style = "bold bright-yellow"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "⚠ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕ "
+untracked = "⊘ "
+stashed = "📦 "
+modified = "✎ "
+staged = "+"
+
+# --------------------------------------------
+# Programming Languages (Engineering icons)
+# --------------------------------------------
+
+[python]
+symbol = "🧪 "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[nodejs]
+symbol = "🖥 "
+style = "bright-green"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = "🛠 "
+style = "bright-red"
+format = "[$symbol$version]($style) "
+
+[golang]
+symbol = "🔧 "
+style = "bright-blue"
+format = "[$symbol$version]($style) "
+
+# --------------------------------------------
+# Exit Status (Engineering alert)
+# --------------------------------------------
+[status]
+disabled = false
+symbol = "⚠ "
+style = "bold bright-red"
+format = "[$symbol$status]($style) "
+
+# --------------------------------------------
+# Prompt Character (Engineering command arrow)
+# --------------------------------------------
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+style_success = "bold bright-green"
+style_error = "bold bright-red"
