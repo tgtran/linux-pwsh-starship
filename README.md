@@ -1,3 +1,19 @@
+## 🐧 LinuxCompat Module
+
+This project includes **LinuxCompat**, a PowerShell module that adds familiar Linux-style commands and utilities to PowerShell on Windows, Linux, and macOS.
+
+### Features
+- Linux-style commands:
+  - `cp`, `mv`, `rm`, `cat`, `pwd`, `cd`, `touch`, `head`, `tail`, `grep`, `find`, `which`, `du`, `ps`
+- Enhanced directory listings:
+  - `ll` (colorized long listing)
+- Safe aliases that do not override PowerShell core behavior
+- Works automatically after installation
+
+### Auto-loading
+The installer places LinuxCompat into:
+
+
 # 🌌 Starship Galactic Themes
 ### *A multi‑quadrant terminal theme pack for Starship & Oh My Posh*
 
