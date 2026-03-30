@@ -17,7 +17,7 @@ LinuxCompat is not published to the PowerShell Gallery. Installation is manual.
 ## 1. Download or Clone the Repository
 
 ```powershell
-git clone https://github.com/<your-username>/<your-repo>.git
+git clone https://github.com/tgtran/linux-pwsh-starship.git
 ```
 
 Or download the ZIP and extract it.
@@ -60,6 +60,8 @@ Add this line to your PowerShell profile:
 Import-Module LinuxCompat
 ```
 
+** You may need to set-executionpolicy to remotesigned and/or issue unblock LinuxCompat.psm1 command
+
 If your profile doesn’t exist:
 
 ```powershell
@@ -68,8 +70,13 @@ if (!(Test-Path $PROFILE)) {
 }
 notepad $PROFILE
 ```
-
 ---
+
+## 5. Install Starship 
+use "winget install starship"
+or go to the source
+https://starship.rs/installing/
+
 
 # 🌌 Starship Galactic Themes  
 *A multi‑quadrant terminal theme pack for Starship & Oh My Posh*
