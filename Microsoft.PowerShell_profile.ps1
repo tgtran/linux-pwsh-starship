@@ -3,28 +3,27 @@
 # ============================================
 
 # --------------------------------------------
-# 1. Load LinuxCompat Module (if installed)
+# 1. Load LinuxCompat Module
 # --------------------------------------------
-if (Get-Module -ListAvailable -Name LinuxCompat) {
+$LinuxCompatPath = "C:\Users\coe-admin\Documents\PowerShell\Modules\LinuxCompat"
+if (Test-Path $LinuxCompatPath) {
+    Import-Module $LinuxCompatPath
+} elseif (Get-Module -ListAvailable -Name LinuxCompat) {
     Import-Module LinuxCompat
 }
 
 # --------------------------------------------
-# 2. Modern, Informative Prompt
+# 2. Modern, Informative Prompt (Fallback)
 # --------------------------------------------
 function prompt {
     $path = Split-Path -Leaf (Get-Location)
     $git = ""
-
     if (Test-Path .git) {
         $branch = git rev-parse --abbrev-ref HEAD 2>$null
         if ($branch) { $git = " [$branch]" }
     }
-
     $status = if ($LASTEXITCODE -ne 0) { "✗" } else { "✓" }
-    $hostName = $env:COMPUTERNAME
-
-    "$status ${hostName}:$path$git > "
+    "$status $($env:COMPUTERNAME):$path$git > "
 }
 
 # --------------------------------------------
@@ -36,7 +35,7 @@ Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key Ctrl+r -Function ReverseSearchHistory
 
 # --------------------------------------------
-# 4. Auto-CD (type a folder name to enter it)
+# 4. Auto-CD & Editor Shortcuts
 # --------------------------------------------
 Set-PSReadLineOption -AddToHistoryHandler {
     param($line)
@@ -47,51 +46,86 @@ Set-PSReadLineOption -AddToHistoryHandler {
     return $true
 }
 
-# --------------------------------------------
-# 5. Editor Shortcuts
-# --------------------------------------------
-# VS Code
 function e { code . }
-
-# Notepad++
 function np { & "C:\Program Files\Notepad++\notepad++.exe" $args }
 
 # --------------------------------------------
-# 6. Directory Bookmarks
+# 5. Directory Bookmarks
 # --------------------------------------------
 $global:marks = @{}
-
 function mark { param($name) $global:marks[$name] = (Get-Location).Path }
 function jump { param($name) Set-Location $global:marks[$name] }
 
 # --------------------------------------------
-# 7. Utility Functions
+# 6. Utility Functions
 # --------------------------------------------
-
-# Reload profile
 function reload { . $PROFILE }
 
-# Cleanup temp files
 function cleanup {
     Remove-Item -Recurse -Force "$env:TEMP\*" -ErrorAction SilentlyContinue
     Remove-Item -Recurse -Force "c:\windows\TEMP\*" -ErrorAction SilentlyContinue
-    Write-Host "Temp cleaned."
+    Write-Host "Temp cleaned." -ForegroundColor Cyan
 }
 
-# Quick HEAD request (like curl -I)
 function pingurl {
     param([string]$url)
     Invoke-WebRequest -Method Head -Uri $url
 }
 
+function Move-FilesToFolders {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true, Position=0)]
+        [string]$Path,
+        [Parameter(Position=1)]
+        [string[]]$Extension = @(".m4b", ".jpg", ".mp3")
+    )
+    process {
+        if (-not (Test-Path $Path)) { Write-Error "Path '$Path' does not exist."; return }
+        $files = Get-ChildItem -Path $Path -File -Include $Extension
+        foreach ($file in $files) {
+            $targetFolder = Join-Path -Path $Path -ChildPath $file.BaseName
+            if (-not (Test-Path $targetFolder)) { New-Item -Path $targetFolder -ItemType Directory -Force | Out-Null }
+            
+            $finalPath = Join-Path -Path $targetFolder -ChildPath $file.Name
+            $counter = 1
+            while (Test-Path $finalPath) {
+                $newName = "{0}_{1}{2}" -f $file.BaseName, $counter, $file.Extension
+                $finalPath = Join-Path -Path $targetFolder -ChildPath $newName
+                $counter++
+            }
+            Move-Item -Path $file.FullName -Destination $finalPath
+        }
+    }
+}
+
+function Remove-Dash {
+    param([string]$Path = (Get-Location))
+    Get-ChildItem -Path $Path -Filter "*_*" | ForEach-Object { 
+        Rename-Item $_.FullName -NewName ($_.Name -replace "_", " ") 
+    }
+}
+
+# --------------------------------------------
+# 7. Starship Theme Management
+# --------------------------------------------
+$global:_StarshipThemeCache = @()
+
+function Get-StarshipThemes {
+    $themePath = "$HOME/.config/starship-themes"
+    if (Test-Path $themePath) {
+        $global:_StarshipThemeCache = Get-ChildItem $themePath -Filter *.toml | Select-Object -ExpandProperty BaseName
+    }
+    return $global:_StarshipThemeCache
+}
+
 function Set-StarshipTheme {
     param([string]$Name)
-
     $source = "$HOME/.config/starship-themes/$Name.toml"
     $target = "$HOME/.config/starship.toml"
 
     if (Test-Path $source) {
-        Copy-Item $source $target -Force
+        Copy-Item -LiteralPath $source -Destination $target -Force
         Write-Host "Starship theme switched to '$Name'." -ForegroundColor Green
         reload
     } else {
@@ -100,29 +134,26 @@ function Set-StarshipTheme {
 }
 
 function Choose-StarshipTheme {
-    $themes = Get-ChildItem "$HOME/.config/starship-themes" -Filter *.toml |
-              Select-Object -ExpandProperty BaseName
+    $themes = Get-StarshipThemes
+    if ($themes.Count -eq 0) {
+        Write-Host "No themes found in $HOME/.config/starship-themes" -ForegroundColor Yellow
+        return
+    }
 
     Write-Host "Available Starship Themes:" -ForegroundColor Cyan
-    $i = 1
-    foreach ($t in $themes) {
-        Write-Host "[$i] $t"
-        $i++
+    for ($i = 0; $i -lt $themes.Count; $i++) {
+        Write-Host "[$($i + 1)] $($themes[$i])"
     }
 
     $choice = Read-Host "Select theme number"
-    $selected = $themes[$choice - 1]
-
-    if ($selected) {
-        Set-StarshipTheme $selected
+    if ([int]::TryParse($choice, [ref]$idx) -and $idx -le $themes.Count -and $idx -gt 0) {
+        Set-StarshipTheme $themes[$idx - 1]
     } else {
         Write-Host "Invalid selection." -ForegroundColor Red
     }
 }
 
-Invoke-Expression (&starship init powershell)
-
-# --------------------------------------------
-# 9. Startup Message
-# --------------------------------------------
-Write-Host "Enhanced PowerShell environment loaded." -ForegroundColor Cyan
+# Initialize Starship
+if (Get-Command starship -ErrorAction SilentlyContinue) {
+    Invoke-Expression (&starship init powershell)
+}
