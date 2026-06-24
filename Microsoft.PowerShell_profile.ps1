@@ -1,11 +1,12 @@
 # ============================================
-# PowerShell Profile - Enhanced Linux-like Shell
+# PowerShell v7 Profile - Enhanced Linux-like Shell
 # ============================================
 
 # --------------------------------------------
 # 1. Load LinuxCompat Module
 # --------------------------------------------
-$LinuxCompatPath = "C:\Users\coe-admin\Documents\PowerShell\Modules\LinuxCompat"
+Import-Module PSReadLine -ErrorAction SilentlyContinue
+$LinuxCompatPath = "$Home\Documents\PowerShell\Modules\LinuxCompat"
 if (Test-Path $LinuxCompatPath) {
     Import-Module $LinuxCompatPath
 } elseif (Get-Module -ListAvailable -Name LinuxCompat) {
@@ -78,11 +79,11 @@ function Move-FilesToFolders {
         [Parameter(Mandatory=$true, ValueFromPipeline=$true, Position=0)]
         [string]$Path,
         [Parameter(Position=1)]
-        [string[]]$Extension = @(".m4b", ".jpg", ".mp3")
+        [string[]]$Extension = @("*.m4b", "*.jpg", "*.mp3")
     )
     process {
         if (-not (Test-Path $Path)) { Write-Error "Path '$Path' does not exist."; return }
-        $files = Get-ChildItem -Path $Path -File -Include $Extension
+        $files = Get-ChildItem -Path "$Path\*" -File -Include $Extension
         foreach ($file in $files) {
             $targetFolder = Join-Path -Path $Path -ChildPath $file.BaseName
             if (-not (Test-Path $targetFolder)) { New-Item -Path $targetFolder -ItemType Directory -Force | Out-Null }
@@ -113,14 +114,20 @@ $global:_StarshipThemeCache = @()
 
 function Get-StarshipThemes {
     $themePath = "$HOME/.config/starship-themes"
+
     if (Test-Path $themePath) {
-        $global:_StarshipThemeCache = Get-ChildItem $themePath -Filter *.toml | Select-Object -ExpandProperty BaseName
+        $global:_StarshipThemeCache = Get-ChildItem $themePath -Filter *.toml |
+                                      Select-Object -ExpandProperty BaseName
+    } else {
+        $global:_StarshipThemeCache = @()
     }
+
     return $global:_StarshipThemeCache
 }
 
 function Set-StarshipTheme {
     param([string]$Name)
+
     $source = "$HOME/.config/starship-themes/$Name.toml"
     $target = "$HOME/.config/starship.toml"
 
@@ -135,6 +142,7 @@ function Set-StarshipTheme {
 
 function Choose-StarshipTheme {
     $themes = Get-StarshipThemes
+
     if ($themes.Count -eq 0) {
         Write-Host "No themes found in $HOME/.config/starship-themes" -ForegroundColor Yellow
         return
@@ -146,14 +154,18 @@ function Choose-StarshipTheme {
     }
 
     $choice = Read-Host "Select theme number"
-    if ([int]::TryParse($choice, [ref]$idx) -and $idx -le $themes.Count -and $idx -gt 0) {
+
+    # FIX: declare $idx before using [ref]
+    [int]$idx = 0
+
+    if ([int]::TryParse($choice, [ref]$idx) -and $idx -gt 0 -and $idx -le $themes.Count) {
         Set-StarshipTheme $themes[$idx - 1]
     } else {
         Write-Host "Invalid selection." -ForegroundColor Red
     }
 }
 
-# Initialize Starship
+# Initialize Starship only if installed
 if (Get-Command starship -ErrorAction SilentlyContinue) {
     Invoke-Expression (&starship init powershell)
 }
