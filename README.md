@@ -217,20 +217,3 @@ oh-my-posh init pwsh --config "$HOME\.config\oh-my-posh-themes\unimatrix-zero.om
 Released under the **MIT License**.
 
 ---
-
-# 🖖 Live Long and Customize
-
-This project is built for fans who want their terminal to feel like part of the Star Trek universe.  
-Contributions, new factions, and enhancements are welcome.
-```
-
----
-
-If you want, I can also generate:
-
-- A **badge header**  
-- A **table of contents**  
-- A **preview screenshot grid**  
-- A **release description**  
-
-Just tell me the direction you want to take it.
